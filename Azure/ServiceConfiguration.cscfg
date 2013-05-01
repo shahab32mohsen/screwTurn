@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="2" osVersion="*">
-	<Role name="WebApplication">
-		<Instances count="1" />
-		<ConfigurationSettings>
-			<Setting name="ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=###ACCOUNTNAME###;AccountKey=###KEY###" />
-			<!--
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="2" osVersion="*" schemaVersion="2012-10.1.8">
+  <Role name="WebApplication">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=###ACCOUNTNAME###;AccountKey=###KEY###" />
+      <!--
 				Define multiple wikis giving their name and host(s)
 				(multiple wikis are accepted separated by a pipe, multiple hosts are accepted separated by a semicolon).
 				The "root" wiki, which is MANDATORY, also acts as fallback for all unknown hosts.
@@ -15,7 +15,7 @@
 					wiki1 runs on the wiki1.acme.com and alias.acme.com hosts
 					wiki2 runs on the wiki2.acme.com host
 			-->
-			<Setting name="Wikis" value="root=" />
-		</ConfigurationSettings>
-	</Role>
+      <Setting name="Wikis" value="root=" />
+    </ConfigurationSettings>
+  </Role>
 </ServiceConfiguration>
