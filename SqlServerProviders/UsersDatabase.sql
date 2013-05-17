@@ -1,4 +1,4 @@
-
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'User')
 create table [User] (
 	[Wiki] varchar(100) not null,
 	[Username] nvarchar(100) not null,
@@ -10,6 +10,7 @@ create table [User] (
 	constraint [PK_User] primary key clustered ([Wiki], [Username])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserGroup')
 create table [UserGroup] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(100) not null,
@@ -17,6 +18,7 @@ create table [UserGroup] (
 	constraint [PK_UserGroup] primary key clustered ([Wiki], [Name])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserGroupMembership')
 create table [UserGroupMembership] (
 	[Wiki] varchar(100) not null,
 	[User] nvarchar(100) not null,
@@ -28,6 +30,7 @@ create table [UserGroupMembership] (
 	constraint [PK_UserGroupMembership] primary key clustered ([Wiki], [User], [UserGroup])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'UserData')
 create table [UserData] (
 	[Wiki] varchar(100) not null,
 	[User] nvarchar(100) not null,

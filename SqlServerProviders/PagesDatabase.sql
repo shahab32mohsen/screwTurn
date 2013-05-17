@@ -1,4 +1,4 @@
-﻿
+﻿if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Namespace')
 create table [Namespace] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(100) not null,
@@ -6,6 +6,7 @@ create table [Namespace] (
 	constraint [PK_Namespace] primary key clustered ([Wiki], [Name])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Category')
 create table [Category](
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(100) not null,
@@ -15,6 +16,7 @@ create table [Category](
 	constraint [PK_Category] primary key clustered ([Wiki], [Name], [Namespace])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PageContent')
 create table [PageContent] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(200) not null,
@@ -32,6 +34,7 @@ create table [PageContent] (
 	constraint [PK_PageContent] primary key clustered ([Wiki], [Name], [Namespace], [Revision])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'CategoryBinding')
 -- Deleting/Renaming/Moving a page requires manually updating the binding
 create table [CategoryBinding] (
 	[Wiki] varchar(100) not null,
@@ -44,6 +47,7 @@ create table [CategoryBinding] (
 	constraint [PK_CategoryBinding] primary key clustered ([Wiki], [Namespace], [Page], [Category])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PageKeyword')
 create table [PageKeyword] (
 	[Wiki] varchar(100) not null,
 	[Page] nvarchar(200) not null,
@@ -55,6 +59,7 @@ create table [PageKeyword] (
 	constraint [PK_PageKeyword] primary key clustered ([Wiki], [Page], [Namespace], [Revision], [Keyword])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Message')
 create table [Message] (
 	[Wiki] varchar(100) not null,
 	[Page] nvarchar(200) not null,
@@ -68,6 +73,7 @@ create table [Message] (
 	constraint [PK_Message] primary key clustered ([Wiki], [Page], [Namespace], [Id])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'NavigationPath')
 create table [NavigationPath] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(100) not null,
@@ -77,6 +83,7 @@ create table [NavigationPath] (
 	constraint [PK_NavigationPath] primary key clustered ([Wiki], [Name], [Namespace], [Page])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Snippet')
 create table [Snippet] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(200) not null,
@@ -84,6 +91,7 @@ create table [Snippet] (
 	constraint [PK_Snippet] primary key clustered ([Wiki], [Name])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'ContentTemplate')
 create table [ContentTemplate] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(200) not null,

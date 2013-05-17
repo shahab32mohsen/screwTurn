@@ -1,4 +1,5 @@
-﻿create table [SearchIndex] (
+﻿if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'SearchIndex')
+create table [SearchIndex] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(200) not null,
 	[Size] bigint not null,
@@ -7,6 +8,7 @@
 	constraint [PK_SearchIndex] primary key clustered ([Wiki], [Name])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'SearchIndexLock')
 create table [SearchIndexLock] (
     [Wiki] varchar(100) not null,
 	[Name] varchar(200) not null,

@@ -158,33 +158,6 @@ namespace ScrewTurn.Wiki.Plugins.SqlServer {
 		}
 
 		/// <summary>
-		/// Detects whether the database schema needs to be updated.
-		/// </summary>
-		/// <returns><c>true</c> if an update is needed, <c>false</c> otherwise.</returns>
-		private bool SchemaNeedsUpdate() {
-			SqlCommand cmd = GetCommand(connString);
-			cmd.CommandText = "select [Version] from [Version] where [Component] = 'SearchIndex'";
-
-			bool exists = false;
-
-			try {
-				int version = ExecuteScalar<int>(cmd, -1);
-				exists = version < CurrentSchemaVersion;
-			}
-			catch(SqlException) {
-				exists = false;
-			}
-			finally {
-				try {
-					cmd.Connection.Close();
-				}
-				catch { }
-			}
-
-			return exists;
-		}
-
-		/// <summary>
 		/// Creates the standard database schema.
 		/// </summary>
 		private void CreateStandardSchema() {
@@ -197,14 +170,12 @@ namespace ScrewTurn.Wiki.Plugins.SqlServer {
 		}
 
 		/// <summary>
-		/// Creates or updates the database schema if necessary.
+		/// Creates the database schema if necessary.
+		/// This schema is new on v4 so there are no updates
 		/// </summary>
 		protected override void CreateOrUpdateDatabaseIfNecessary() {
 			if(!SchemaExists()) {
 				CreateStandardSchema();
-			}
-			if(SchemaNeedsUpdate()) {
-				// Run minor update batches...
 			}
 		}
 

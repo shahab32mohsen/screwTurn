@@ -1,4 +1,4 @@
-﻿
+﻿if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Directory')
 create table [Directory] (
 	[Wiki] varchar(100) not null,
 	[FullPath] nvarchar(250) not null,
@@ -6,6 +6,7 @@ create table [Directory] (
 	constraint [PK_Directory] primary key clustered ([Wiki], [FullPath])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'File')
 create table [File] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(200) not null,
@@ -18,6 +19,7 @@ create table [File] (
 	constraint [PK_File] primary key clustered ([Wiki], [Name], [Directory])
 )
 
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Attachment')
 create table [Attachment] (
 	[Wiki] varchar(100) not null,
 	[Name] nvarchar(200) not null,

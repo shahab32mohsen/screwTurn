@@ -123,6 +123,25 @@ namespace ScrewTurn.Wiki.Plugins.SqlServer {
 			return cmd;
 		}
 
+		/// <summary>
+		/// Helper function to rename tables and its constraints, appending a suffix
+		/// </summary>
+		/// <param name="connString">The connection string.</param>
+		/// <param name="table">Table name.</param>
+		/// <param name="suffix">Suffix to append to table name.</param>
+		public void RenameTable(string connString, string table, string suffix)
+		{
+			DbCommand cmd = GetCommand(GetConnection(connString), "sp_executesql", new List<Parameter>() {
+				new Parameter(ParameterType.String, "stmt", Properties.Resources.RenameTable),
+				new Parameter(ParameterType.String, "params", "@table nvarchar(128), @suffix nvarchar(10)"),
+				new Parameter(ParameterType.String, "table", table),
+				new Parameter(ParameterType.String, "suffix", suffix)
+			});
+			cmd.CommandType = System.Data.CommandType.StoredProcedure;
+			cmd.ExecuteNonQuery();
+			cmd.Connection.Close();
+		}
+
 	}
 
 }

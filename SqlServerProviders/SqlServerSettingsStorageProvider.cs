@@ -18,6 +18,7 @@ namespace ScrewTurn.Wiki.Plugins.SqlServer {
 		private readonly SqlServerCommandBuilder commandBuilder = new SqlServerCommandBuilder();
 
 		private const int CurrentSchemaVersion = 4000;
+		private const string PreviousVersionTableSuffix = "_v3";
 
 		/// <summary>
 		/// Gets a new command with an open connection.
@@ -139,7 +140,40 @@ namespace ScrewTurn.Wiki.Plugins.SqlServer {
 			}
 			if(SchemaNeedsUpdate()) {
 				// Run minor update batches...
+				Update3000to4000();
 			}
+		}
+
+		/// <summary>
+		/// Updates the database schema from version 3000 to 4000
+		/// </summary>
+		private void Update3000to4000()
+		{
+			// Rename tables
+			RenameTable("Setting");
+			RenameTable("MetaDataItem");
+			RenameTable("RecentChange");
+			RenameTable("PluginStatus");
+			RenameTable("OutgoingLink");
+			RenameTable("AclEntry");
+
+			CreateStandardSchema();
+
+			// Run updates
+			SqlCommand cmd = GetCommand(connString);
+			cmd.CommandText = Properties.Resources.SettingsDatabase_3000to4000;
+			cmd.ExecuteNonQuery();
+			cmd.Connection.Close();
+		}
+
+		/// <summary>
+		/// Helper function to rename previous tables and its constraints
+		/// (the constraints are renamed to avoid collision with new objects)
+		/// </summary>
+		/// <param name="table">Table name</param>
+		private void RenameTable(string table)
+		{
+			commandBuilder.RenameTable(connString, table, PreviousVersionTableSuffix);
 		}
 
 		/// <summary>

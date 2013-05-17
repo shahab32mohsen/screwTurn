@@ -119,39 +119,15 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FilesDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\FilesDatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="FilesDatabase_3000to4000" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\filesdatabase_3000to4000.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="GlobalSettingsDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\GlobalSettingsDatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>..\filesdatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="PagesDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PagesDatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PagesDatabase_3001to4000" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\pagesdatabase_3001to4000.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PagesInitNamespaceTableDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PagesInitNamespaceTableDatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="RenameTable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\renametable.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="SearchIndexDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\SearchIndexDatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>..\pagesdatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="SettingsDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\SettingsDatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="SettingsDatabase_3000to4000" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\settingsdatabase_3000to4000.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>..\settingsdatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="UsersDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\UsersDatabase.sql;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="UsersDatabase_3000to4000" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\usersdatabase_3000to4000.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>..\usersdatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

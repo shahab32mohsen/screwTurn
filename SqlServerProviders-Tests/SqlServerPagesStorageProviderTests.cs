@@ -98,6 +98,46 @@ namespace ScrewTurn.Wiki.Plugins.SqlServer.Tests {
 			Assert.IsNotNull(prov.Information, "Information should not be null");
 		}
 
+		[Test]
+		public void Init_Upgrade()
+		{
+			FixtureTearDown();
+			FixtureSetUp();
+
+			SqlConnection cn = new SqlConnection(ConnString + InitialCatalog);
+			cn.Open();
+			SqlCommand cmd = cn.CreateCommand();
+			cmd.CommandText = Properties.Resources.PagesDatabase;
+
+			try
+			{
+				cmd.ExecuteNonQuery();
+			}
+			catch (SqlException sqlex)
+			{
+				Console.WriteLine(sqlex);
+				throw new Exception("Could not generate v3 Pages test database", sqlex);
+			}
+			finally
+			{
+				cn.Close();
+			}
+
+			SqlServerPagesStorageProvider prov = new SqlServerPagesStorageProvider();
+			prov.SetUp(MockHost(), ConnString + InitialCatalog);
+			prov.Init(MockHost(), ConnString + InitialCatalog, "-");
+
+			// Check if v3 tables were renamed
+			cn = new SqlConnection(ConnString + InitialCatalog);
+			cn.Open();
+			cmd = cn.CreateCommand();
+			cmd.CommandText = "select count(*) from INFORMATION_SCHEMA.TABLES where TABLE_NAME LIKE '%_v3'";
+			int count = (int)cmd.ExecuteScalar();
+			cn.Close();
+
+			Assert.IsTrue(count > 0);
+		}
+
 		[TestCase("", ExpectedException = typeof(InvalidConfigurationException))]
 		[TestCase("blah", ExpectedException = typeof(InvalidConfigurationException))]
 		[TestCase("Data Source=(local)\\SQLExpress;User ID=inexistent;Password=password;InitialCatalog=Inexistent;", ExpectedException = typeof(InvalidConfigurationException))]
