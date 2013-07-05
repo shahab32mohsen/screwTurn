@@ -151,7 +151,7 @@
 			
 				<asp:View ID="viwPageLink" runat="server">
 					
-					<asp:DropDownList ID="lstNamespace" runat="server" Width="270px" OnSelectedIndexChanged="lstNamespace_SelectedIndexChanged" />
+					<asp:DropDownList ID="lstNamespace" runat="server" Width="270px" OnSelectedIndexChanged="lstNamespace_SelectedIndexChanged" AutoPostBack="true" />
 				
 					<div id="ClientTreePagesDiv">
 					

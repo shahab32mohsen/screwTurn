@@ -735,7 +735,12 @@ namespace ScrewTurn.Wiki.Plugins.ActiveDirectory {
 		/// <param name="config">The Configuration data, if any.</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="host"/> or <paramref name="config"/> are <c>null</c>.</exception>
 		/// <exception cref="InvalidConfigurationException">If <paramref name="config"/> is not valid or is incorrect.</exception>
-		public void SetUp(IHostV40 host, string config) { }
+		public void SetUp(IHostV40 host, string config) {
+			if (host == null) throw new ArgumentNullException("host");
+			if (config == null) throw new ArgumentNullException("config");
+
+			m_Host = host;
+		}
 
 		/// <summary>
 		/// Returns the storage provider.
