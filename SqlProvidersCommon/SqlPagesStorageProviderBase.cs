@@ -1284,15 +1284,20 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 			ICommandBuilder builder = GetCommandBuilder();
 			QueryBuilder queryBuilder = new QueryBuilder(builder);
 
-			string query = queryBuilder.SelectFrom("PageContent", "CategoryBinding", new string[] { "Wiki", "Namespace", "Name" }, new string[] { "Wiki", "Namespace", "Page" }, Join.LeftJoin, new string[] { "Namespace", "Name", "CreationDateTime", "Title", "User", "LastModified", "Comment", "Content", "Description" }, new string[] { "Page" }, "PageKeyword", new string[] { "Wiki", "Namespace", "Page" }, Join.LeftJoin, new string[] { "Keyword" });
+			string query = queryBuilder.SelectFrom("PageContent", "CategoryBinding", new string[] { "Wiki", "Namespace", "Name" },
+				new string[] { "Wiki", "Namespace", "Page" }, Join.LeftJoin, new string[] { "Namespace", "Name", "CreationDateTime", "Title", "User", "LastModified", "Comment", "Content", "Description" },
+				new string[] { "Page" });
+
 			query = queryBuilder.Where(query, "PageContent", "Wiki", WhereOperator.Equals, "Wiki");
 			query = queryBuilder.AndWhere(query, "CategoryBinding", "Category", WhereOperator.IsNull, null);
 			query = queryBuilder.AndWhere(query, "PageContent", "Namespace", WhereOperator.Equals, "Namespace");
+			query = queryBuilder.AndWhere(query, "PageContent", "Revision", WhereOperator.Equals, "Revision");
 			query = queryBuilder.OrderBy(query, new[] { "Name" }, new[] { Ordering.Asc });
 
 			List<Parameter> parameters = new List<Parameter>(2);
 			parameters.Add(new Parameter(ParameterType.String, "Wiki", wiki));
 			parameters.Add(new Parameter(ParameterType.String, "Namespace", nspaceName));
+			parameters.Add(new Parameter(ParameterType.Int16, "Revision", -1));
 
 			DbCommand command = builder.GetCommand(connString, query, parameters);
 
@@ -1303,7 +1308,8 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 
 				while(reader.Read()) {
 					result.Add(new PageContent(NameTools.GetFullName(reader["PageContent_Namespace"] as string, reader["PageContent_Name"] as string),
-						this, new DateTime(((DateTime)reader["PageContent_CreationDateTime"]).Ticks, DateTimeKind.Utc), reader["PageContent_Title"] as string, reader["PageContent_User"] as string, new DateTime(((DateTime)reader["PageContent_LastModified"]).Ticks, DateTimeKind.Utc), 
+						this, new DateTime(((DateTime)reader["PageContent_CreationDateTime"]).Ticks, DateTimeKind.Utc), reader["PageContent_Title"] as string, 
+						reader["PageContent_User"] as string, new DateTime(((DateTime)reader["PageContent_LastModified"]).Ticks, DateTimeKind.Utc), 
 						GetNullableColumn<string>(reader, "PageContent_Comment", ""), reader["PageContent_Content"] as string, new string[0], 
 						GetNullableColumn<string>(reader, "PageContent_Description", null)));
 				}

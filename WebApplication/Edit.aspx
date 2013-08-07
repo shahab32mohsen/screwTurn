@@ -106,7 +106,7 @@
 		
 		<asp:Panel ID="pnlTemplates" runat="server" Visible="False" meta:resourcekey="pnlTemplatesResource1">
 			<div id="TemplatesInternalDiv">
-				<asp:DropDownList ID="lstTemplates" runat="server" OnSelectedIndexChanged="lstTemplates_SelectedIndexChanged" 
+				<asp:DropDownList ID="lstTemplates" runat="server" OnSelectedIndexChanged="lstTemplates_SelectedIndexChanged" AutoPostBack="true"
 					meta:resourcekey="lstTemplatesResource1" />
 				<div id="TemplatePreviewDiv">
 					<asp:Label ID="lblTemplatePreview" runat="server" meta:resourcekey="lblTemplatePreviewResource1" 
