@@ -1177,6 +1177,16 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 				List<string> keywords = new List<string>(10);
 
 				while(reader.Read()) {
+
+					string thisName = reader["PageContent_Name"] as string;
+
+					if (name != null && thisName != name)
+					{
+						// Add when the next name is read to avoid duplicates and clear keywords list for next
+						result.Add(new PageContent(NameTools.GetFullName(nspaceName, name), this, creationDateTime, title, user, dateTime, comment, content, keywords.ToArray(), description));
+						keywords = new List<string>();
+					}
+
 					name = reader["PageContent_Name"] as string;
 					creationDateTime = new DateTime(((DateTime)reader["PageContent_CreationDateTime"]).Ticks, DateTimeKind.Utc);
 					title = reader["PageContent_Title"] as string;
@@ -1189,7 +1199,10 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 					if(!IsDBNull(reader, "PageKeyword_Keyword")) {
 						keywords.Add(reader["PageKeyword_Keyword"] as string);
 					}
+				}
 
+				if (name != null)
+				{
 					result.Add(new PageContent(NameTools.GetFullName(nspaceName, name), this, creationDateTime, title, user, dateTime, comment, content, keywords.ToArray(), description));
 				}
 
@@ -1232,9 +1245,19 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 
 				string name = null, title = null, user = null, comment = null, content = null, description = null;
 				DateTime dateTime = DateTime.MinValue, creationDateTime = DateTime.MinValue;
-				List<string> keywords = new List<string>(10);
+				List<string> keywords = new List<string>();
 
 				while(reader.Read()) {
+					
+					string thisName = reader["PageContent_Name"] as string;
+
+					if (name != null && thisName != name)
+					{
+						// Add when the next name is read to avoid duplicates and clear keywords list for next
+						result.Add(new PageContent(NameTools.GetFullName(nspaceName, name), this, creationDateTime, title, user, dateTime, comment, content, keywords.ToArray(), description));
+						keywords = new List<string>();
+					}
+
 					name = reader["PageContent_Name"] as string;
 					creationDateTime = new DateTime(((DateTime)reader["PageContent_CreationDateTime"]).Ticks, DateTimeKind.Utc);
 					title = reader["PageContent_Title"] as string;
@@ -1244,13 +1267,16 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 					content = reader["PageContent_Content"] as string;
 					description = GetNullableColumn<string>(reader, "PageContent_Description", null);
 
-					if(!IsDBNull(reader, "PageKeyword_Keyword")) {
+					if (!IsDBNull(reader, "PageKeyword_Keyword"))
+					{
 						keywords.Add(reader["PageKeyword_Keyword"] as string);
 					}
+				}
 
+				if (name != null)
+				{
 					result.Add(new PageContent(NameTools.GetFullName(nspaceName, name), this, creationDateTime, title, user, dateTime, comment, content, keywords.ToArray(), description));
 				}
-				
 				CloseReader(reader);
 
 				return result.ToArray();
