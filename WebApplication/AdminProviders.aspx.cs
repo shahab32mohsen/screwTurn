@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -550,6 +552,141 @@ namespace ScrewTurn.Wiki {
 				!provider.GroupMembershipReadOnly &&
 				!provider.UsersDataReadOnly;
 		}
+
+        /// <summary>
+        /// Implements export.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnExport_OnClick(object sender, EventArgs e)
+        {
+            Log.LogEntry("Data export requested.", EntryType.General, SessionFacade.GetCurrentUsername());
+
+            string tempDir = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(tempDir);
+            string zipFileName = Path.Combine(tempDir, "Backup.zip");
+
+            // Parse string from a textbox with namespaces names.
+            List<string> namespacesList = new List<string>();
+            string exportNspaces = txtExportNamespaces.Text;
+            while (exportNspaces.Length > 0)
+            {
+                string curNamespace = exportNspaces.IndexOf(',') == -1
+                    ? exportNspaces
+                    : exportNspaces.Substring(0, exportNspaces.IndexOf(','));
+                namespacesList.Add(curNamespace);
+                exportNspaces = exportNspaces.IndexOf(',') == -1
+                    ? ""
+                    : exportNspaces.Substring(exportNspaces.IndexOf(',') + 1,
+                        exportNspaces.Length - exportNspaces.IndexOf(',') - 1);
+            }
+
+            // Parse string from a textbox with categories names.
+            List<string> categoriesList = new List<string>();
+            string exportCategories = txtExportCategories.Text;
+            while (exportCategories.Length > 0)
+            {
+                string curCategory = exportCategories.IndexOf(',') == -1
+                    ? exportCategories
+                    : exportCategories.Substring(0, exportCategories.IndexOf(','));
+                categoriesList.Add(curCategory);
+                exportCategories = exportCategories.IndexOf(',') == -1
+                    ? ""
+                    : exportCategories.Substring(exportCategories.IndexOf(',') + 1,
+                        exportCategories.Length - exportCategories.IndexOf(',') - 1);
+            }
+
+            bool backupEileSucceded = BackupRestore.BackupRestore.BackupAll(zipFileName,
+                Settings.Provider.ListPluginAssemblies(),
+                Settings.Provider,
+                (from p in Collectors.PagesProviderCollector.AllProviders where !p.ReadOnly select p).ToArray(),
+                (from p in Collectors.UsersProviderCollector.AllProviders where IsUsersProviderFullWriteEnabled(p) select p).ToArray(),
+                (from p in Collectors.FilesProviderCollector.AllProviders where !p.ReadOnly select p).ToArray(), namespacesList, categoriesList);
+
+            FileInfo file = new FileInfo(zipFileName);
+            Response.Clear();
+            Response.AppendHeader("content-type", GetMimeType(zipFileName));
+            Response.AppendHeader("content-disposition", "attachment;filename=Backup.zip");
+            Response.AppendHeader("content-length", file.Length.ToString());
+
+            Response.WriteFile(zipFileName);
+            Response.Flush();
+
+            Directory.Delete(tempDir, true);
+            Log.LogEntry("Data export completed.", EntryType.General, SessionFacade.GetCurrentUsername());
+        }
+
+        private string GetMimeType(string ext)
+        {
+            string mime = "";
+            if (MimeTypes.Types.TryGetValue(ext, out mime))
+                return mime;
+            else return "application/octet-stream";
+        }
+
+        /// <summary>
+        /// Import pages and attachments.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnImport_OnClick(object sender, EventArgs e)
+        {
+            lblUploadPagesProgress.Text = "<span style='color:blue'>Подождите, идет импорт информации...</span>";
+            bool fileOk = false;
+            if (pagesBackUpFile.HasFile)
+            {
+                string fileExtension = System.IO.Path.GetExtension(pagesBackUpFile.FileName).ToLower();
+                if (fileExtension == ".zip")
+                    fileOk = true;
+            }
+            if (fileOk)
+            {
+                string path = Server.MapPath("~/public/");
+                pagesBackUpFile.PostedFile.SaveAs(path + pagesBackUpFile.FileName);
+                bool success = BackupRestore.BackupRestore.RestorePagesStorageProvider(path + pagesBackUpFile.FileName,
+                (from p in Collectors.PagesProviderCollector.AllProviders where !p.ReadOnly select p).FirstOrDefault(),
+                (from p in Collectors.FilesProviderCollector.AllProviders where !p.ReadOnly select p).FirstOrDefault());
+                if (success)
+                {
+                    lblUploadPagesProgress.Text = "<span style='color:green'>Импорт страниц и вложений успешно завершен</span>";
+                }
+            }
+            else
+            {
+                lblUploadPagesProgress.Text = "<span style='color:red'>Неверный тип файла...</span>";
+            }
+
+        }
+
+        /// <summary>
+        /// Import files.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnImportFiles_OnClick(object sender, EventArgs e)
+        {
+            bool fileOk = false;
+            if (filesBackupFile.HasFile)
+            {
+                string fileExtension = System.IO.Path.GetExtension(filesBackupFile.FileName).ToLower();
+                if (fileExtension == ".zip")
+                    fileOk = true;
+            }
+            if (fileOk)
+            {
+                string path = Server.MapPath("~/public/");
+                filesBackupFile.PostedFile.SaveAs(path + filesBackupFile.FileName);
+                lblUploadFilesProgress.Text = "<span style='color:blue'>Подождите, идет импорт файлов...</span>";
+                bool success = BackupRestore.BackupRestore.RestoreFilesStorageProvider(path + filesBackupFile.FileName,
+                    (from p in Collectors.FilesProviderCollector.AllProviders where !p.ReadOnly select p).FirstOrDefault());
+                if (success)
+                {
+                    lblUploadFilesProgress.Text = "<span style='color:green'>Импорт файлового хранилища успешно завершен</span>";
+                }
+            }
+
+
+        }
 
 	}
 

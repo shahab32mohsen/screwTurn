@@ -248,7 +248,68 @@
 		<asp:Literal ID="lblCopySettingsDestinationConfig" runat="server" Text="Destination Settings Provider Configuration string (if needed)" EnableViewState="false" /><br />
 		<anthem:TextBox ID="txtSettingsDestinationConfig" runat="server" TextMode="MultiLine" CssClass="config" />
 	</div>
-	
+    
+    <br /><br />
+    <h2 class="separator"><asp:Literal ID="lblExport" Text="Backup wiki information" EnableViewState="False"  runat="server"></asp:Literal></h2>
+    <h4><asp:Literal ID="lblExportDescription" runat="server" Text="Backups pages, attachments and files. If both textboxes are empty, all pages will be exported." EnableViewState="False"></asp:Literal></h4>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <asp:Literal runat="server" ID="lblExportNamespacesDesc" EnableViewState="False">List comma separated namespaces to backup (for root type "root").</asp:Literal>
+            </td>
+            <td>
+                <asp:TextBox runat="server" ID="txtExportNamespaces" Width="350px"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Literal runat="server" ID="lblExportCategoriesDesc" EnableViewState="False">List comma separated categories to backup.</asp:Literal>
+            </td>
+            <td>
+                <asp:TextBox runat="server" ID="txtExportCategories" Width="350px"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align: right">
+                <asp:Button ID="btnExport" Text="Export" OnClick="btnExport_OnClick" runat="server"/>
+            </td>
+        </tr>
+    </table>
+    
+    <h2 class="separator"><asp:Literal ID="lblImport" Text="Import to wiki" EnableViewState="False" runat="server"></asp:Literal></h2>
+    <h4><asp:Literal ID="lblImportDescription" runat="server" Text="Load pages, attachments and files." EnableViewState="False"></asp:Literal></h4>
+    <br />
+    <table>
+        <tr>
+            <td>
+                <asp:Literal ID="lblUploadPagesFile" runat="server" Text="Choose archive with pages and attachments" EnableViewState="False"></asp:Literal>
+            </td>
+            <td>
+                <asp:FileUpload runat="server" ID="pagesBackUpFile" EnableViewState="False"/>
+                <asp:Button ID="btnImport" Text="Import pages" runat="server" OnClick="btnImport_OnClick"/>
+                <asp:Literal runat="server" ID="lblUploadPagesProgress"></asp:Literal>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right">
+                <asp:Literal ID="lblUploadFilesFile" runat="server" Text="Choose archive with files backups" EnableViewState="False"></asp:Literal>
+            </td>
+            <td>
+                <asp:FileUpload runat="server" ID="filesBackupFile" EnableViewState="False"/>
+                <asp:Button runat="server" ID="btnImportFiles" Text="Import files" OnClick="btnImportFiles_OnClick"/>
+                <asp:Literal runat="server" ID="lblUploadFilesProgress"></asp:Literal>
+            </td>
+        </tr>
+    </table>
+   
+    <br /><br />
+    <h2 class="separator"><asp:Literal ID="lblWordImport" Text="Import Microsoft Word documents" EnableViewState="False" runat="server"></asp:Literal></h2>
+    <h4><asp:Literal ID="lblWordImportDescription" runat="server" Text="Import Microsoft Word documents to wiki" EnableViewState="False"></asp:Literal></h4>
+    <br />
+    <a href="ImportWord.aspx">Go to "Import Microsoft Word documens"</a>
+
 	<div style="clear: both;"></div>
 	
 </asp:Content>
