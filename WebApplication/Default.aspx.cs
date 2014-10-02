@@ -8,8 +8,9 @@ using ScrewTurn.Wiki.PluginFramework;
 using System.Text;
 
 namespace ScrewTurn.Wiki {
+    using System.Linq;
 
-	public partial class DefaultPage : BasePage {
+    public partial class DefaultPage : BasePage {
 
 		private PageInfo currentPage = null;
 		private PageContent currentContent = null;
@@ -554,8 +555,6 @@ namespace ScrewTurn.Wiki {
 		/// <summary>
 		/// Prepares the previous and next pages link for navigation paths.
 		/// </summary>
-		/// <param name="previousPageLink">The previous page link.</param>
-		/// <param name="nextPageLink">The next page link.</param>
 		private void SetupAdjacentPages() {
 			StringBuilder prev = new StringBuilder(50), next = new StringBuilder(50);
 
@@ -688,11 +687,23 @@ namespace ScrewTurn.Wiki {
 		/// <param name="canPostMessages">A value indicating whether the current user can post messages.</param>
 		/// <param name="canManageDiscussion">A value indicating whether the current user can manage the discussion.</param>
 		private void SetupPageContent(bool canPostMessages, bool canManageDiscussion) {
-			if(!discussMode && !viewCodeMode) {
-				Literal literal = new Literal();
-				literal.Text = Content.GetFormattedPageContent(currentPage, true);
-				plhContent.Controls.Add(literal);
-			}
+            if (!discussMode && !viewCodeMode)
+            {
+                var words = new List<string>();
+
+                var highlights = Request["HL"];
+                if (!string.IsNullOrEmpty(highlights))
+                {
+                    words = highlights.Split(',').ToList();
+                }
+
+                var literal = new Literal
+                {
+                    Text = Content.GetFormattedPageContent(this.currentPage, true, words)
+                };
+
+                plhContent.Controls.Add(literal);
+            }
 			else if(!discussMode && viewCodeMode) {
 				if(Settings.EnableViewPageCodeFeature) {
 					Literal literal = new Literal();

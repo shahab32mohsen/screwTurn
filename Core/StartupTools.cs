@@ -23,6 +23,17 @@ namespace ScrewTurn.Wiki {
 			else return "";
 		}
 
+        /// <summary>
+        /// Gets the Settings Storage Provider configuration string from web.config.
+        /// </summary>
+        /// <returns>The configuration string.</returns>
+        public static string GetSimpleAccessConfiguration()
+        {
+            string config = WebConfigurationManager.AppSettings["SimpleAccess"];
+            if (config != null) return config.ToLower();
+            else return "";
+        }
+
 		/// <summary>
 		/// Updates the DLLs into the settings storage provider, if appropriate.
 		/// </summary>

@@ -192,4 +192,10 @@
   <data name="lblSelectNoneResource1.Text" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="commentForSubstringsResource1.Text" xml:space="preserve">
+    <value>* Слова длиной меньше 3 символов будут игнорироваться</value>
+  </data>
+  <data name="substringsCheckBoxResource1.Text" xml:space="preserve">
+    <value>Поиск в качестве подстроки *</value>
+  </data>
 </root>

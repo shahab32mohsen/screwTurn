@@ -660,22 +660,24 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 			DbConnection connection = builder.GetConnection(connString);
 			DbTransaction transaction = BeginTransaction(connection);
 
+            // Exceptions are turned off not to stop backuping process.
 			if(!DirectoryExists(transaction, path)) {
 				RollbackTransaction(transaction);
-				throw new ArgumentException("Directory does not exist", "path");
+				// throw new ArgumentException("Directory does not exist", "path");
 			}
 
 			string newDirectoryFullPath = PrepareDirectory(path + name);
 
-			if(DirectoryExists(transaction, newDirectoryFullPath)) {
+            // Exceptions are turned off not to stop backuping process.
+			if(DirectoryExists(transaction, name)) {
 				RollbackTransaction(transaction);
-				throw new ArgumentException("Directory already exists", "name");
+				// throw new ArgumentException("Directory already exists", "name");
 			}
 
 			string query = QueryBuilder.NewQuery(builder).InsertInto("Directory", new string[] { "FullPath", "Parent" }, new string[] { "FullPath", "Parent" });
 
 			List<Parameter> parameters = new List<Parameter>(2);
-			parameters.Add(new Parameter(ParameterType.String, "FullPath", newDirectoryFullPath));
+			parameters.Add(new Parameter(ParameterType.String, "FullPath", name));
 			parameters.Add(new Parameter(ParameterType.String, "Parent", path));
 
 			DbCommand command = builder.GetCommand(transaction, query, parameters);

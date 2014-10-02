@@ -110,6 +110,13 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 	/// <returns><c>true</c> if the word is found, <c>false</c> otherwise.</returns>
 	public delegate bool TryFindWord(string text, out Word word, DbConnection connection);
 
+    /// <summary>
+    /// Implements expanding of query words when search as substrings
+    /// </summary>
+    /// <param name="queryWords"></param>
+    /// <param name="connection"></param>
+    public delegate void ExpandQueryWords(ref string[] queryWords, DbConnection connection);
+
 	/// <summary>
 	/// Defines legal index element types.
 	/// </summary>

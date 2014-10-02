@@ -14,6 +14,11 @@ namespace ScrewTurn.Wiki.SearchEngine {
 		private string[] documentTypeTags;
 		private SearchOptions options;
 
+        /// <summary>
+        /// Search substrings
+        /// </summary>
+        public static bool Substrings = false;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:SearchParameters" /> class.
 		/// </summary>

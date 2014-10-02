@@ -5,6 +5,8 @@ using ScrewTurn.Wiki.PluginFramework;
 using ScrewTurn.Wiki.AclEngine;
 
 namespace ScrewTurn.Wiki {
+    using System.Web.Configuration;
+    using NamespaceInfo = ScrewTurn.Wiki.PluginFramework.NamespaceInfo;
 
 	/// <summary>
 	/// Utility class for checking permissions and authorizations.
@@ -56,6 +58,17 @@ namespace ScrewTurn.Wiki {
 		public static bool CheckActionForNamespace(NamespaceInfo nspace, string action, string currentUser, string[] groups) {
 			if(action == null) throw new ArgumentNullException("action");
 			if(action.Length == 0) throw new ArgumentException("Action cannot be empty", "action");
+
+            if (StartupTools.GetSimpleAccessConfiguration() == "true")
+            {
+                if (action == Actions.ForNamespaces.ReadPages) return true;
+                if (action == Actions.ForNamespaces.UploadAttachments) return true;
+                if (action == Actions.ForNamespaces.ReadDiscussion) return true;
+                if (action == Actions.ForNamespaces.PostDiscussion) return true;
+                if (action == Actions.ForNamespaces.DownloadAttachments) return true;
+                if (action == Actions.ForNamespaces.CreatePages) return true;
+            }
+
 			if(!AuthTools.IsValidAction(action, Actions.ForNamespaces.All)) throw new ArgumentException("Invalid action", "action");
 
 			if(currentUser == null) throw new ArgumentNullException("currentUser");
@@ -115,6 +128,20 @@ namespace ScrewTurn.Wiki {
 
 			if(action == null) throw new ArgumentNullException("action");
 			if(action.Length == 0) throw new ArgumentException("Action cannot be empty", "action");
+
+            // All can read!
+            if (StartupTools.GetSimpleAccessConfiguration() == "true")
+            {
+                if (action == Actions.ForPages.ReadPage) return true;
+                if (action == Actions.ForPages.DownloadAttachments) return true;
+                if (action == Actions.ForPages.UploadAttachments) return true;
+                if (action == Actions.ForPages.ReadDiscussion) return true;
+                if (action == Actions.ForPages.PostDiscussion) return true;
+                if (action == Actions.ForPages.ModifyPage) return true;
+                if (action == Actions.ForPages.DeleteAttachments) return true;
+                if (action == Actions.ForPages.ManageCategories) return true;
+            }
+
 			if(!AuthTools.IsValidAction(action, Actions.ForPages.All)) throw new ArgumentException("Invalid action", "action");
 
 			if(currentUser == null) throw new ArgumentNullException("currentUser");
@@ -179,6 +206,17 @@ namespace ScrewTurn.Wiki {
 
 			if(action == null) throw new ArgumentNullException("action");
 			if(action.Length == 0) throw new ArgumentException("Action cannot be empty", "action");
+
+            // All can read!
+            if (StartupTools.GetSimpleAccessConfiguration() == "true")
+            {
+                if (action == Actions.ForDirectories.List) return true;
+                if (action == Actions.ForDirectories.UploadFiles) return true;
+                if (action == Actions.ForDirectories.DownloadFiles) return true;
+                if (action == Actions.ForDirectories.CreateDirectories) return true;
+                if (action == Actions.ForDirectories.DeleteFiles) return true;
+            }
+
 			if(!AuthTools.IsValidAction(action, Actions.ForDirectories.All)) throw new ArgumentException("Invalid action", "action");
 
 			if(currentUser == null) throw new ArgumentNullException("currentUser");

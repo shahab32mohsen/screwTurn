@@ -62,22 +62,22 @@ namespace ScrewTurn.Wiki {
 			bool countHit = CountHit(filename);
 
 			// Verify permissions
-			bool canDownload = false;
+            ////bool canDownload = false;
 
-			if(isPageAttachment) {
-				canDownload = AuthChecker.CheckActionForPage(pageInfo, Actions.ForPages.DownloadAttachments,
-					SessionFacade.GetCurrentUsername(), SessionFacade.GetCurrentGroupNames());
-			}
-			else {
-				string dir = Tools.GetDirectoryName(filename);
-				canDownload = AuthChecker.CheckActionForDirectory(provider, dir,
-					 Actions.ForDirectories.DownloadFiles, SessionFacade.GetCurrentUsername(),
-					 SessionFacade.GetCurrentGroupNames());
-			}
-			if(!canDownload) {
-				Response.StatusCode = 401;
-				return;
-			}
+            ////if(isPageAttachment) {
+            ////    canDownload = AuthChecker.CheckActionForPage(pageInfo, Actions.ForPages.DownloadAttachments,
+            ////        SessionFacade.GetCurrentUsername(), SessionFacade.GetCurrentGroupNames());
+            ////}
+            ////else {
+            ////    string dir = Tools.GetDirectoryName(filename);
+            ////    canDownload = AuthChecker.CheckActionForDirectory(provider, dir,
+            ////         Actions.ForDirectories.DownloadFiles, SessionFacade.GetCurrentUsername(),
+            ////         SessionFacade.GetCurrentGroupNames());
+            ////}
+            ////if(!canDownload) {
+            ////    Response.StatusCode = 401;
+            ////    return;
+            ////}
 
 			long size = -1;
 

@@ -45,6 +45,7 @@ namespace ScrewTurn.Wiki {
 
 				chkAllNamespaces.Checked = Request["AllNamespaces"] == "1";
 				chkFilesAndAttachments.Checked = Request["FilesAndAttachments"] == "1";
+			    substringsCheckBox.Checked = Request["Substrings"] == "1";
 
 				if(chkAllNamespaces.Checked) {
 					lblHideCategoriesScript.Text = "<script type=\"text/javascript\"><!--\r\ndocument.getElementById('CategoryFilterDiv').style['display'] = 'none';\r\n//-->\r\n</script>";
@@ -115,7 +116,8 @@ namespace ScrewTurn.Wiki {
 				"&Categories=", GetCategories(),
 				"&Mode=", GetMode(),
 				chkAllNamespaces.Checked ? "&AllNamespaces=1" : "",
-				chkFilesAndAttachments.Checked ? "&FilesAndAttachments=1" : ""));
+				chkFilesAndAttachments.Checked ? "&FilesAndAttachments=1" : "",
+                substringsCheckBox.Checked ? "&Substrings=1" : ""));
 		}
 
 		/// <summary>
@@ -156,7 +158,7 @@ namespace ScrewTurn.Wiki {
 			SearchResultCollection results = null;
 			DateTime begin = DateTime.Now;
 			try {
-				results = SearchTools.Search(query, true, searchFilesAndAttachments, mode);
+				results = SearchTools.Search(query, true, searchFilesAndAttachments, mode,true);
 			}
 			catch(ArgumentException ex) {
 				Log.LogEntry("Search threw an exception\n" + ex.ToString(), EntryType.Warning, SessionFacade.CurrentUsername);

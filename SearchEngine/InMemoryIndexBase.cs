@@ -498,6 +498,15 @@ namespace ScrewTurn.Wiki.SearchEngine {
 			}
 		}
 
+        /// <summary>
+        /// Expand Query Words
+        /// </summary>
+        /// <param name="queryWords"></param>
+        public void ExpandQueryWords(ref string[] queryWords)
+        {
+
+        }
+
 		#region IDisposable Members
 
 		/// <summary>

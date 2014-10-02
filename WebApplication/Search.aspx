@@ -25,11 +25,21 @@
 			<asp:RadioButton ID="rdoAllWords" runat="server" Text="All words" GroupName="search" meta:resourcekey="rdoAllWordsResource1" />
 			<asp:RadioButton ID="rdoExactPhrase" runat="server" Text="Exact phrase" GroupName="search" meta:resourcekey="rdoExactPhraseResource1" />
 		</div>
+        
+        <asp:CheckBox ID="substringsCheckBox" 
+            runat="server" 
+            Checked="True" 
+            Text="Search as substring * "
+            meta:resourcekey="substringsCheckBoxResource1" />
+        <br />
+        
 		
 		<asp:CheckBox ID="chkAllNamespaces" runat="server" Text="Search in all Namespaces and all Categories" Checked="true" onclick="javascript:ToggleCategoriesList();" meta:resourcekey="chkAllNamespacesResource1" />
 		<br />
 		<asp:CheckBox ID="chkFilesAndAttachments" runat="server" Text="Search Files and Attachments" Checked="true" meta:resourcekey="chkFilesAndAttachmentsResource1" />
-	</div>
+        <br />
+	    <asp:Literal runat="server" ID="commentForSubstrings" Text="* Words less than 3 letters will be omitted" meta:resourcekey="commentForSubstringsResource1"></asp:Literal>
+    </div>
 	
 	<div id="CategoryFilterDiv">
 		<h4><asp:Literal ID="lblCategoryFilter" runat="server" Text="Filter by Category" EnableViewState="False" meta:resourcekey="lblCategoryFilterResource1" /></h4>

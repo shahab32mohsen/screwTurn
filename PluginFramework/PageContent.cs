@@ -110,6 +110,10 @@ namespace ScrewTurn.Wiki.PluginFramework {
 		/// Gets the <b>unformatted</b> Content.
 		/// </summary>
 		public string Content {
+            set
+            {
+                content = value;
+            }
 			get { return content; }
 		}
 

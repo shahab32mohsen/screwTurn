@@ -2371,7 +2371,7 @@ namespace ScrewTurn.Wiki {
 		/// <param name="text">The input text.</param>
 		/// <param name="noWikiBegin">The output list of begin indexes of NOWIKI tags.</param>
 		/// <param name="noWikiEnd">The output list of end indexes of NOWIKI tags.</param>
-		private static void ComputeNoWiki(string text, ref List<int> noWikiBegin, ref List<int> noWikiEnd) {
+		public static void ComputeNoWiki(string text, ref List<int> noWikiBegin, ref List<int> noWikiEnd) {
 			Match match;
 			noWikiBegin.Clear();
 			noWikiEnd.Clear();
@@ -2392,7 +2392,7 @@ namespace ScrewTurn.Wiki {
 		/// <param name="noWikiEnd">The list of end indexes of NOWIKI tags.</param>
 		/// <param name="end">The end index of the NOWIKI tag that encloses the specified character, or zero.</param>
 		/// <returns><c>true</c> if the specified character is enclosed in a NOWIKI tag, <c>false</c> otherwise.</returns>
-		private static bool IsNoWikied(int index, List<int> noWikiBegin, List<int> noWikiEnd, out int end) {
+		public static bool IsNoWikied(int index, List<int> noWikiBegin, List<int> noWikiEnd, out int end) {
 			for(int i = 0; i < noWikiBegin.Count; i++) {
 				if(index > noWikiBegin[i] && index < noWikiEnd[i]) {
 					end = noWikiEnd[i];

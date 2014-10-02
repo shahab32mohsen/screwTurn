@@ -21,7 +21,7 @@ namespace ScrewTurn.Wiki {
 		public static PageInfo[] SearchSimilarPages(string name, string nspace) {
 			if(string.IsNullOrEmpty(nspace)) nspace = null;
 
-			SearchResultCollection searchResults = Search(name, false, false, SearchOptions.AtLeastOneWord);
+			SearchResultCollection searchResults = Search(name, false, false, SearchOptions.AtLeastOneWord, true);
 
 			List<PageInfo> result = new List<PageInfo>(20);
 
@@ -59,13 +59,16 @@ namespace ScrewTurn.Wiki {
 		/// <param name="fullText">A value indicating whether to perform a full-text search.</param>
 		/// <param name="searchFilesAndAttachments">A value indicating whether to search through files and attachments.</param>
 		/// <param name="options">The search options.</param>
+        /// <param name="searchSubstrings">Indicates whether to search as substrings.</param>
 		/// <returns>The results collection.</returns>
-		public static SearchResultCollection Search(string query, bool fullText, bool searchFilesAndAttachments, SearchOptions options) {
+        public static SearchResultCollection Search(string query, bool fullText, bool searchFilesAndAttachments, SearchOptions options, bool searchSubstrings)
+        {
 
 			// First, search regular page content...
 			List<SearchResultCollection> allCollections = new List<SearchResultCollection>(3);
 
 			foreach(IPagesStorageProviderV30 prov in Collectors.PagesProviderCollector.AllProviders) {
+			    SearchParameters.Substrings = searchSubstrings;
 				SearchResultCollection currentResults = prov.PerformSearch(new SearchParameters(query, options));
 
 				if(!fullText) {

@@ -473,7 +473,7 @@ namespace ScrewTurn.Wiki {
 			if(query == null) throw new ArgumentNullException("query");
 			if(query.Length == 0) throw new ArgumentException("Query cannot be empty", "query");
 
-			return SearchTools.Search(query, fullText, filesAndAttachments, options);
+			return SearchTools.Search(query, fullText, filesAndAttachments, options, true);
 		}
 
 		/// <summary>

@@ -6,6 +6,7 @@ using ScrewTurn.Wiki.PluginFramework;
 using System.Web;
 
 namespace ScrewTurn.Wiki {
+    using ScrewTurn.Wiki.Plugins.ActiveDirectory;
 
 	/// <summary>
 	/// Manages all the User Accounts data.
@@ -609,29 +610,46 @@ namespace ScrewTurn.Wiki {
 		/// <param name="password">The password.</param>
 		/// <returns>The correct UserInfo, or <c>null</c>.</returns>
 		public static UserInfo TryLogin(string username, string password) {
-			if(username == "admin" && password == Settings.MasterPassword) {
-				return GetAdministratorAccount();
-			}
+            if(username == "admin" && password == Settings.MasterPassword)
+            {
+                return GetAdministratorAccount();
+            }
 
-			// Try default provider first
-			IUsersStorageProviderV30 defaultProvider =
-				Collectors.UsersProviderCollector.GetProvider(Settings.DefaultUsersProvider) as IUsersStorageProviderV30;
+            Log.LogEntry("TryLogin 1", EntryType.General, Log.SystemUsername);
 
-			if(defaultProvider != null) {
-				UserInfo temp = defaultProvider.TryManualLogin(username, password);
-				if(temp != null) return temp;
-			}
+            // Try default provider first.
+            IUsersStorageProviderV30 defaultProvider =
+                Collectors.UsersProviderCollector.GetProvider(Settings.DefaultUsersProvider) as IUsersStorageProviderV30;
 
-			// Then try all other providers
-			IUsersStorageProviderV30[] providers = Collectors.UsersProviderCollector.AllProviders;
-			foreach(IUsersStorageProviderV30 p in providers) {
-				IUsersStorageProviderV30 extProv = p as IUsersStorageProviderV30;
-				if(extProv != null && extProv != defaultProvider) {
-					UserInfo temp = extProv.TryManualLogin(username, password);
-					if(temp != null) return temp;
-				}
-			}
-			return null;
+            Log.LogEntry("TryLogin 2 " + (defaultProvider is ActiveDirectoryProvider), EntryType.General, Log.SystemUsername);
+
+            IUsersStorageProviderV30[] providers = Collectors.UsersProviderCollector.AllProviders;
+            foreach(IUsersStorageProviderV30 p in providers)
+            {
+                if(p is ActiveDirectoryProvider)
+                {
+                    Log.LogEntry("TryLogin 21 AD found ", EntryType.General, Log.SystemUsername);
+                    defaultProvider = p;
+                }
+            }
+
+            if (defaultProvider != null)
+            {
+                UserInfo temp = defaultProvider.TryManualLogin(username, password);
+                if(temp != null) return temp;
+            }
+
+            // Then try all other providers.
+            foreach(IUsersStorageProviderV30 p in providers)
+            {
+                IUsersStorageProviderV30 extProv = p as IUsersStorageProviderV30;
+                if(extProv != null && extProv != defaultProvider)
+                {
+                    UserInfo temp = extProv.TryManualLogin(username, password);
+                    if(temp != null) return temp;
+                }
+            }
+            return null;
 		}
 
 		/// <summary>

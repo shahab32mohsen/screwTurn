@@ -157,7 +157,7 @@
 						<st:ClientTree ID="ctPages" runat="server" OnPopulate="ctPages_Populate" EnableViewState="False"
 							LeafCssClass="menulink" NodeCssClass="menulink" ContainerCssClass="subtree" />
 					</div>
-					
+					<asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 					<asp:Literal ID="lblPageName" runat="server" Text="Page Name (required)" EnableViewState="False" meta:resourcekey="lblPageNameResource1" /><br />
 					<asp:TextBox ID="txtPageName" runat="server" Width="264px" meta:resourcekey="txtPageNameResource1" /><br />
 					<asp:Literal ID="lblPageTitle" runat="server" Text="Link Title (optional)" EnableViewState="False" meta:resourcekey="lblPageTitleResource1" /><br />

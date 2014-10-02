@@ -169,18 +169,23 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 		private DbConnection connection;
 		private TryFindWord implementation;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:SqlWordFetcher" /> class.
-		/// </summary>
-		/// <param name="connection">An open database connection.</param>
-		/// <param name="implementation">The method implementation.</param>
-		public SqlWordFetcher(DbConnection connection, TryFindWord implementation) {
-			if(connection == null) throw new ArgumentNullException("connection");
-			if(implementation == null) throw new ArgumentNullException("implementation");
+	    private ExpandQueryWords expand;
 
-			this.connection = connection;
-			this.implementation = implementation;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:SqlWordFetcher" /> class.
+        /// </summary>
+        /// <param name="connection">An open database connection.</param>
+        /// <param name="implementation">The method implementation.</param>
+        /// <param name="expandImpl">The Expand Query Words method implementation</param>
+        public SqlWordFetcher(DbConnection connection, TryFindWord implementation, ExpandQueryWords expandImpl)
+        {
+            if (connection == null) throw new ArgumentNullException("connection");
+            if (implementation == null) throw new ArgumentNullException("implementation");
+
+            this.connection = connection;
+            this.implementation = implementation;
+            this.expand = expandImpl;
+        }
 
 		/// <summary>
 		/// Tries to get a word.
@@ -191,6 +196,14 @@ namespace ScrewTurn.Wiki.Plugins.SqlCommon {
 		public bool TryGetWord(string text, out Word word) {
 			return implementation(text, out word, connection);
 		}
+
+        /// <summary>
+        /// Expand Query Words.
+        /// </summary>
+        public void ExpandQueryWords(ref string[] queryWords)
+        {
+            expand(ref queryWords, connection);
+        }
 
 		#region IDisposable Members
 

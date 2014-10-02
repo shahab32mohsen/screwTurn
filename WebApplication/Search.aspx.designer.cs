@@ -85,6 +85,15 @@ namespace ScrewTurn.Wiki {
         protected global::System.Web.UI.WebControls.RadioButton rdoExactPhrase;
         
         /// <summary>
+        /// substringsCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox substringsCheckBox;
+        
+        /// <summary>
         /// chkAllNamespaces control.
         /// </summary>
         /// <remarks>
@@ -101,6 +110,15 @@ namespace ScrewTurn.Wiki {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkFilesAndAttachments;
+        
+        /// <summary>
+        /// commentForSubstrings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal commentForSubstrings;
         
         /// <summary>
         /// lblCategoryFilter control.

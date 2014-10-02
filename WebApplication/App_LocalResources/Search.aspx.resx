@@ -192,4 +192,10 @@
   <data name="lblSelectNoneResource1.Text" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="commentForSubstringsResource1.Text" xml:space="preserve">
+    <value>* Words having less than 3 symbols will be ignored</value>
+  </data>
+  <data name="substringsCheckBoxResource1.Text" xml:space="preserve">
+    <value>Search as substring *</value>
+  </data>
 </root>

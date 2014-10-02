@@ -6,8 +6,10 @@ using System.Web;
 using System.Threading;
 
 namespace ScrewTurn.Wiki {
+    using System.Linq;
+    using ScrewTurn.Wiki.SearchEngine;
 
-	/// <summary>
+    /// <summary>
 	/// Contains methods for formatting content using a pipeline paradigm.
 	/// </summary>
 	public static class FormattingPipeline {
@@ -124,25 +126,46 @@ namespace ScrewTurn.Wiki {
 			return raw;
 		}
 
-		/// <summary>
-		/// Prepares the title of an item for display.
-		/// </summary>
-		/// <param name="title">The input title.</param>
-		/// <param name="forIndexing">A value indicating whether the formatting is being done for content indexing.</param>
-		/// <param name="context">The context information.</param>
-		/// <param name="current">The current page, if any.</param>
-		/// <returns>The prepared title, properly sanitized.</returns>
-		public static string PrepareTitle(string title, bool forIndexing, FormattingContext context, PageInfo current) {
-			string temp = title;
-			ContextInformation info = new ContextInformation(forIndexing, false, context, current, System.Threading.Thread.CurrentThread.CurrentCulture.Name,
-				HttpContext.Current, SessionFacade.GetCurrentUsername(), SessionFacade.GetCurrentGroupNames());
+        /// <summary>
+        /// Prepares the title of an item for display.
+        /// </summary>
+        /// <param name="title">The input title.</param>
+        /// <param name="forIndexing">A value indicating whether the formatting is being done for content indexing.</param>
+        /// <param name="context">The context information.</param>
+        /// <param name="current">The current page, if any.</param>
+        /// <param name="matches">Matches to highlight</param>
+        /// <returns>The prepared title, properly sanitized.</returns>
+        public static string PrepareTitle(string title, bool forIndexing, FormattingContext context, PageInfo current, WordInfoCollection matches)
+        {
+            string temp = title;
+            var info = new ContextInformation(forIndexing, false, context, current, Thread.CurrentThread.CurrentCulture.Name,
+                HttpContext.Current, SessionFacade.GetCurrentUsername(), SessionFacade.GetCurrentGroupNames());
 
-			foreach(IFormatterProviderV30 prov in GetSortedFormatters()) {
-				temp = prov.PrepareTitle(temp, info);
-			}
+            temp = GetSortedFormatters().Aggregate(temp, (current1, prov) => prov.PrepareTitle(current1, info));
 
-			return PrepareItemTitle(temp);
-		}
+            var result = PrepareItemTitle(temp);
+
+            if (matches.Count != 0)
+            {
+                var qq = matches.Select(m => m.Text).Distinct().ToList();
+                result = Content.HighlightContent(result, qq, true);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Prepares the title of an item for display.
+        /// </summary>
+        /// <param name="title">The input title.</param>
+        /// <param name="forIndexing">A value indicating whether the formatting is being done for content indexing.</param>
+        /// <param name="context">The context information.</param>
+        /// <param name="current">The current page, if any.</param>
+        /// <returns>The prepared title, properly sanitized.</returns>
+        public static string PrepareTitle(string title, bool forIndexing, FormattingContext context, PageInfo current)
+        {
+            return PrepareTitle(title, forIndexing, context, current, new WordInfoCollection());
+        }
 
 		/// <summary>
 		/// Prepares the title of an item for safe display.
